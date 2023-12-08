@@ -21,7 +21,7 @@ func main() {
 	fetchBearerToken := flag.Bool("fetch-bearer-token", false, "fetch a new bearer token")
 	numAccounts := flag.Uint("num-accounts", 1, "number of accounts to create")
 	numAttempts := flag.Uint("num-attempts", 3, "number of attempts before giving up")
-	outputPath := flag.String("output-path", "guest_accounts.json", "output file")
+	outputPath := flag.String("output-path", "guest_accounts.jsonl", "output file")
 	debugLogging := flag.Bool("debug-logging", false, "debug logging")
 	flag.Parse()
 
@@ -64,8 +64,6 @@ func main() {
 		}
 		defer f.Close()
 	}
-
-	writeStrToF("[")
 
 	maxRetries := int(*numAttempts)
 	for i := uint(0); i < *numAccounts; i++ {
@@ -125,12 +123,7 @@ func main() {
 
 		fmt.Printf("%s\n", guestAccount)
 
-		s := guestAccount
-		if i > 0 {
-			s = "," + s
-		}
+		s := guestAccount + "\n"
 		writeStrToF(s)
 	}
-
-	writeStrToF("]")
 }
